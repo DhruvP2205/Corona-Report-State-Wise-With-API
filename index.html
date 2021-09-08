@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Demo</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<style type="text/css">
+		*
+		{
+			margin: 0;
+			padding: 0;
+		}
+		body
+		{
+			background-image: linear-gradient(90deg, #7950f2 5%, #f783ac 95%);
+		}
+		h1
+		{
+			color: white;
+			text-shadow: 2px 2px 4px #000000;
+			font-size: 5rem;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container center">
+		<br>
+	<h1 class="text-center">Covid Cases</h1>
+	<div class="table-responsive-lg">
+		<br>
+	<table class="table-primary text-center table-hover table table-bordered" id="apiState">
+		<tr class="table-primary">
+			<th scope="col">State</th>
+	      	<th scope="col">Active Cases</th>
+	     	<th scope="col">Deceased</th>
+	      	<th scope="col">New Deceased</th>
+	      	<th scope="col">New Infected</th>
+	      	<th scope="col">New Recovered</th>
+	      	<th scope="col">Recovered</th>
+	      	<th scope="col">Total Infected</th>
+	    </tr>
+	</table>
+	</div>
+	</div>
+
+	<script type="text/javascript">
+		
+		async function getCovidApi(indexs) {
+		try
+		{
+			const jsonData = await fetch('https://api.apify.com/v2/key-value-stores/toDWvRj1JpTXiM8FF/records/LATEST?disableRedirect=true');
+
+			const jsdata = await jsonData.json();
+			console.log(jsdata.regionData[indexs]);
+			const data = jsdata.regionData[indexs];
+
+			document.getElementById('apiState').innerHTML += "<tr class='table-success'><td>" + data.region + "</td><td>" + data.activeCases + "</td><td>" + data.deceased + "</td><td>" + data.newDeceased + "</td><td>" + data.newInfected + "</td><td>" + data.newRecovered + "</td><td>" + data.recovered + "</td><td>" + data.totalInfected + "</td></tr>";
+		}
+		catch(error)
+		{
+			console.log(`Error: ${error}`);
+		}
+	}
+
+	let i = 0;
+	while(i<=35)
+	{
+		getCovidApi(i);	
+		i++;
+	}
+
+	</script>
+</body>
+</html>
